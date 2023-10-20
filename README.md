@@ -6,6 +6,10 @@ A comprehensive solution addressing the challenges of ride-sharing, Goober provi
 
 Initiated with `create-t3-app`, our tech foundation includes Typescript, React, Next.js, and Tailwind for styling. Moreover, tRPC streamlines TypeScript calls and Supabase augments SQL operations, Cron jobs, and real-time functionalities.
 
+## Demo 
+
+[Link text]([https://website-name.com](https://goober-jd.vercel.app/))
+
 ## Running the Project Locally
 
 To get started with T3, run `npm install` followed by `npm start`. Remember to set your `.env` variables:
