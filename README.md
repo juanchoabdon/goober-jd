@@ -15,7 +15,7 @@ Initiated with `create-t3-app`, our tech foundation includes Typescript, React, 
 
 ## Demo 
 
-See demo in: [https://goober-jd.vercel.app/](https://goober-jd.vercel.app/)
+Demo deployed in Vercel: [https://goober-jd.vercel.app/](https://goober-jd.vercel.app/)
 
 ## Running the Project Locally
 
@@ -43,6 +43,8 @@ Integrated a view for users to select the roles:
 ### Admin Experience
 
 Optimized for desktop, anticipating that most admin tasks are undertaken at workstations, whether at office spaces or homes.
+
+Check the full experience in [https://goober-jd.vercel.app/admin](https://goober-jd.vercel.app/admin)
 
 ![image description](public/admin.png)
 
@@ -72,6 +74,10 @@ Optimized for desktop, anticipating that most admin tasks are undertaken at work
 ### Rider Experience
 
 Tailored for mobile platforms, the rider interface ensures ride bookings on-the-go. It's modular enough to be repurposed for React Native if a native app is envisioned.
+
+
+Check the full experience in [https://goober-jd.vercel.app/rider](https://goober-jd.vercel.app/rider)
+
 
 ![image description](public/rider.png)
 
@@ -106,6 +112,8 @@ Tailored for mobile platforms, the rider interface ensures ride bookings on-the-
 ### Driver Experience
 
 Molded for mobile platforms with the understanding that drivers are typically on the move.
+
+Check the full experience in [https://goober-jd.vercel.app/driver](https://goober-jd.vercel.app/driver)
 
 ![image description](public/driver.png)
 
