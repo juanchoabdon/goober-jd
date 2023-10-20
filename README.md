@@ -8,7 +8,7 @@ Initiated with `create-t3-app`, our tech foundation includes Typescript, React, 
 
 ## Demo 
 
-[Link text]([https://website-name.com](https://goober-jd.vercel.app/))
+See demo in: [https://goober-jd.vercel.app/](https://goober-jd.vercel.app/))
 
 ## Running the Project Locally
 
