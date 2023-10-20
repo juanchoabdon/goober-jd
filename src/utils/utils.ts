@@ -73,7 +73,10 @@ export const calculateRideETA = (start: PositionAbrev, end: PositionAbrev) => {
   return estimatedTimeInMinutes;
 };
 
-export const parseLocation = (location: string) => {
+export const parseLocation = (location: string | null | undefined) => {
+  if (!location) {
+    return;
+  }
   const parsedLocation = JSON.parse(location) as Location;
   return parsedLocation;
 };
