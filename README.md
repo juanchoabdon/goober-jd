@@ -139,8 +139,14 @@ Check the full experience in [https://goober-jd.vercel.app/driver](https://goobe
 6. Are there considerations for driver benefits or insurance options as part of their association with Goober?
 7. What safety measures can be implemented for the drivers in case of unruly passengers?
 
-### Additional Features
+### Additional Specs
 
 **Ride Assignment Algorithm**: A Supabase-powered Cron job scans for unassigned rides every minute. The closest available driver within a 2km radius is selected.
 
 _Future_: The assignment algorithm could be optimized, considering variables beyond proximity. Also, while Supabase suffices for the MVP, a more robust tool might be needed for scalability.
+
+**Database Schema**: Using Superbase, decided to use a simple schema for the initial solution.
+
+<p align="center">
+<img src="public/db_schema.png" alt="image"  height="auto">
+</p>
