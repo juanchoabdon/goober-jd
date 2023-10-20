@@ -15,6 +15,7 @@ import {
 } from "~/utils/utils";
 import { type PricingSettings } from "~/shared/types/rides";
 import { type PositionAbrev } from "~/shared/types/map";
+import { Driver } from "~/shared/types/drivers";
 
 export const ridesRouter = createTRPCRouter({
   requestRide: publicProcedure
@@ -172,7 +173,7 @@ export const ridesRouter = createTRPCRouter({
       const updateObject = {
         id: rideId,
         status,
-        final_price: null,
+        final_price: 0,
         finished_at: now,
         driver_profit: 0,
       };
@@ -206,12 +207,14 @@ export const ridesRouter = createTRPCRouter({
           timeDifference,
         );
 
-        updateObject.final_price = finalPrice.toFixed(2);
+        const driver_profit = (
+            (finalPrice * priceSettings.take_rate) /
+            100
+          ).toFixed(2);
+
+        updateObject.final_price = Number(finalPrice.toFixed(2));
         updateObject.finished_at = now;
-        updateObject.driver_profit = (
-          (finalPrice * priceSettings.take_rate) /
-          100
-        ).toFixed(2);
+        updateObject.driver_profit = Number(driver_profit);
       }
 
       const { data: updatedRideData, error } = await ctx.supabase
@@ -265,6 +268,7 @@ export const ridesRouter = createTRPCRouter({
         }
 
         const totalProfit = ridesData.reduce(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           (acc, ride) => acc + parseFloat(ride.driver_profit || 0),
           0,
         );
@@ -280,12 +284,13 @@ export const ridesRouter = createTRPCRouter({
       const { data: requestedRides, error: rideError } = await ctx.supabase
         .from("rides")
         .select()
-        .eq("status", "requested");
+        .eq("status", "requested")
 
       if (rideError) {
         throw new Error(rideError.message);
       }
 
+      // eslint-disable-next-line prefer-const
       let { data: availableDrivers, error: driverError } = await ctx.supabase
         .from("drivers")
         .select()
@@ -296,39 +301,50 @@ export const ridesRouter = createTRPCRouter({
       }
 
       for (const ride of requestedRides) {
-        let closestDriver = null;
+        let closestDriver: { id: unknown } | null = null;
         let minimumDistance = Infinity;
 
-        for (const driver of availableDrivers) {
-          const distance = calculateDistance(
-            ride.start_location,
-            driver.current_location,
-          );
-          if (distance < 2 && distance < minimumDistance) {
-            closestDriver = driver;
-            minimumDistance = distance;
+        if (availableDrivers) {
+          for (const driver of availableDrivers) {
+            if (driver) {
+                const newRide = ride as RideRequest;
+                const newDriver = driver as Driver;
+                const rideLoc =  newRide?.start_location as PositionAbrev | null;
+                const driverLoc = newDriver?.current_location as PositionAbrev | null;
+              const distance = calculateDistance(
+                rideLoc,
+                driverLoc,
+              );
+              if (distance) {
+                if (distance < 2 && distance < minimumDistance) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    closestDriver = driver;
+                    minimumDistance = distance;
+                  }
+              }
+            
+            }
           }
         }
-
         if (closestDriver && minimumDistance <= 2) {
           // Assign the driver to this ride and update both the ride and driver status.
           const { error: updateRideError } = await ctx.supabase
             .from("rides")
-            .upsert({ id: ride.id, driver_id: closestDriver.id })
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            .upsert({ id: ride?.id, driver_id: closestDriver.id })
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             .eq("id", ride.id);
 
           if (updateRideError) {
             throw new Error(updateRideError.message);
           }
 
-          if (updateDriverError) {
-            throw new Error(updateDriverError.message);
+          if (availableDrivers) {
+            availableDrivers = availableDrivers.filter(
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              (driver) => driver.id !== closestDriver?.id,
+            );
           }
-
-          // Remove the assigned driver from availableDrivers so they're not considered for the next loop
-          availableDrivers = availableDrivers.filter(
-            (driver) => driver.id !== closestDriver.id,
-          );
         }
       }
     },

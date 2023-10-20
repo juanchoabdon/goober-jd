@@ -1,7 +1,7 @@
 import React from "react";
 import { parseLocation } from "~/utils/utils"; // Assuming this is the right path
 import RideDetails from "./RideDetails"; // Adjust the path based on your directory structure
-import { RideRequest } from "~/shared/types/rides";
+import { type RideRequest } from "~/shared/types/rides";
 
 interface AvailableRideProps {
   isActive: boolean;
@@ -25,6 +25,9 @@ const AvailableRides: React.FC<AvailableRideProps> = ({
   confirmFinishRide,
   changeRideStatus,
 }) => {
+  const parsedStartLocation = parseLocation(availableRide?.start_location);
+  const parsedEndLocation = parseLocation(availableRide?.start_location);
+
   return (
     <>
       {isActive && !acceptedRide ? (
@@ -33,7 +36,9 @@ const AvailableRides: React.FC<AvailableRideProps> = ({
             <li key={availableRide.id} className="rounded-md border p-3">
               <p>
                 <strong>Pickup:</strong>{" "}
-                {parseLocation(availableRide?.start_location).address}
+                {parsedStartLocation
+                  ? parsedStartLocation.address
+                  : "Unknown address"}
               </p>
               <p>
                 <strong>Price:</strong> {` $${availableRide.quote_price}`}
@@ -70,8 +75,8 @@ const AvailableRides: React.FC<AvailableRideProps> = ({
                 onClick={() =>
                   window.open(
                     `https://www.google.com/maps/dir/${
-                      parseLocation(acceptedRide?.end_location).lat
-                    },${parseLocation(acceptedRide?.end_location).lng}`,
+                      parsedEndLocation ? parsedEndLocation.lat : "0"
+                    },${parsedEndLocation ? parsedEndLocation.lng : "0"}`,
                     "_blank",
                   )
                 }
@@ -99,8 +104,8 @@ const AvailableRides: React.FC<AvailableRideProps> = ({
                 onClick={() =>
                   window.open(
                     `https://www.google.com/maps/dir/${
-                      parseLocation(acceptedRide?.start_location).lat
-                    },${parseLocation(acceptedRide?.start_location).lng}`,
+                      parsedStartLocation ? parsedStartLocation.lat : "0"
+                    },${parsedStartLocation ? parsedStartLocation.lng : "0"}`,
                     "_blank",
                   )
                 }

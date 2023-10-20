@@ -11,25 +11,26 @@ const CompletedRides: React.FC<CompletedRideProps> = ({ completedRides }) => {
     <>
       {completedRides.length > 0 ? (
         <ul className="space-y-2">
-          {completedRides.map((ride) => (
-            <li key={ride.id} className="rounded-md border p-3">
-              <p>
-                <strong>Pickup:</strong>
-                {ride?.start_location
-                  ? ` ${parseLocation(ride?.start_location).address}`
-                  : ""}
-              </p>
-              <p>
-                <strong>Dropoff:</strong>
-                {ride?.end_location
-                  ? ` ${parseLocation(ride?.end_location).address}`
-                  : ""}
-              </p>
-              <p>
-                <strong>Earnings:</strong> {` $${ride.driver_profit ?? 0}`}
-              </p>
-            </li>
-          ))}
+          {completedRides.map((ride) => {
+            const parsedStartLocation = parseLocation(ride?.start_location);
+            const parsedEndLocation = parseLocation(ride?.end_location);
+
+            return (
+              <li key={ride.id} className="rounded-md border p-3">
+                <p>
+                  <strong>Pickup:</strong>
+                  {parsedStartLocation ? ` ${parsedStartLocation.address}` : " Address not available"}
+                </p>
+                <p>
+                  <strong>Dropoff:</strong>
+                  {parsedEndLocation ? ` ${parsedEndLocation.address}` : " Address not available"}
+                </p>
+                <p>
+                  <strong>Earnings:</strong> {` $${ride.driver_profit ?? 0}`}
+                </p>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <div className="rounded-md border p-4 text-center">

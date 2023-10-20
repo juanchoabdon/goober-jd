@@ -19,21 +19,21 @@ const RoleSelection: React.FC = () => {
           className="mt-4 block w-full rounded bg-blue-500 py-2 text-white hover:bg-blue-600"
           onClick={() => handleRoleSelection("rider")}
         >
-          I'm a Rider
+          {`I'm a Rider`}
         </button>
 
         <button
           className="mt-4 block w-full rounded bg-orange-500 py-2 text-white hover:bg-orange-600"
           onClick={() => handleRoleSelection("driver")}
         >
-          I'm a Driver
+          {`I'm a Driver`}
         </button>
 
         <button
           className="mt-4 block w-full rounded bg-purple-400 py-2 text-white hover:bg-purple-500"
           onClick={() => handleRoleSelection("admin")}
         >
-          I'm an Admin
+          {`I'm an Admin`}
         </button>
       </div>
     </div>

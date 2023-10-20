@@ -5,8 +5,6 @@ import { type Driver, type DriverFormData } from "~/shared/types/drivers";
 import { type PositionComplete } from "~/shared/types/map";
 import realtimeManager from "~/shared/realtimeManager";
 import { type RideRequest } from "~/shared/types/rides";
-import RideDetails from "~/components/driver/RideDetails";
-import { parseLocation } from "~/utils/utils";
 import DriverRegistrationForm from "~/components/driver/DriverRegisterForm";
 import TabNavigation from "~/components/driver/Navigation";
 import LocationRequest from "~/components/shared/LocationRequest";
@@ -141,7 +139,9 @@ const DriverPage: React.FC = () => {
       intervalId = setInterval(() => {
         if (driver) {
           requestLocation(driver?.id)
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             .then(() => {})
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             .catch(() => {});
         }
       }, 2000);
@@ -227,7 +227,9 @@ const DriverPage: React.FC = () => {
       if (rideStatus === "cancelled") {
         realtimeManager
           .unsubscribeFromRide(rideId)
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           .then(() => {})
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           .catch(() => {});
         handleCancelRide();
       }
@@ -241,7 +243,9 @@ const DriverPage: React.FC = () => {
         setAvailableRide(null);
         realtimeManager
           .unsubscribeFromRide(rideId)
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           .then(() => {})
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           .catch(() => {});
       }
     });
@@ -290,7 +294,9 @@ const DriverPage: React.FC = () => {
         status,
         rideId: acceptedRide.id,
       })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .then(() => {})
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .catch(() => {});
   };
 
@@ -305,6 +311,7 @@ const DriverPage: React.FC = () => {
       {showModal && <Modal message={modalMessage} onClose={closeModal} />}
       {!isRegistered ? (
         <DriverRegistrationForm
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           handleRegister={handleRegister}
           handleInputChange={handleInputChange}
           formData={formData}
@@ -340,6 +347,7 @@ const DriverPage: React.FC = () => {
                   availableRide={availableRide}
                   acceptRide={acceptRide}
                   declineRide={declineRide}
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   cancelRide={cancelRide}
                   confirmFinishRide={confirmFinishRide}
                   changeRideStatus={changeRideStatus}

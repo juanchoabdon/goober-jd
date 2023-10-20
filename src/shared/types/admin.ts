@@ -14,7 +14,6 @@ export type RidesStats = {
   finishedRides: number;
 };
 
-
 export type UpdateSettingsInput = {
   take_rate?: number;
   price_km?: number;
@@ -23,7 +22,7 @@ export type UpdateSettingsInput = {
 };
 
 export type UpdatedSettings = {
-  id: number,
+  id: number;
   take_rate: number;
   price_km: number;
   base_price: number;
@@ -39,22 +38,16 @@ export type RideData = {
   final_price: string;
   driver_profit: string;
   finished_at: string;
-  drivers: { id: number; name: string };
-  riders: { id: number; name: string };
+  drivers: { id: number; name: string }[];
+  riders: { id: number; name: string }[];
 };
 
 export type FormattedRide = {
   rideId: string;
   created_at: string;
   finished_at: string;
-  driver: {
-    id: string;
-    name: string;
-  };
-  rider: {
-    id: string;
-    name: string;
-  };
+  driver: { id: number; name: string };
+  rider: { id: number; name: string };
   status: string;
   pickup_address: string;
   dropoff_address: string;

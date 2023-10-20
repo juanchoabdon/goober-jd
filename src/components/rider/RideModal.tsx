@@ -4,7 +4,7 @@ import { type RideQuote, type RideRequest } from "~/shared/types/rides";
 
 interface RideModalProps {
   showModal: boolean;
-  rideRequest?: RideRequest;
+  rideRequest?: RideRequest | null;
   rideQuote?: RideQuote;
   isLoadingRideRequest: boolean;
   driver?: Driver;

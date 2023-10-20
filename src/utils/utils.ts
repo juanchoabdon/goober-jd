@@ -2,7 +2,13 @@ import { type PricingSettings } from "~/shared/types/rides";
 import { type PositionAbrev } from "~/shared/types/map";
 import { type Location } from "~/shared/types/map";
 
-export const calculateDistance = (start: PositionAbrev, end: PositionAbrev) => {
+export const calculateDistance = (
+  start: PositionAbrev | null,
+  end: PositionAbrev | null,
+) => {
+  if (!end || !start) {
+    return;
+  }
   const R = 6371;
   const dLat = degreesToRadians(end.lat - start.lat);
   const dLon = degreesToRadians(end.lng - start.lng);
@@ -35,14 +41,17 @@ export const calculateRidePrice = (
   const PRICE_PER_MINUTE = pricingSettings.price_minute;
 
   // For demonstration, let's assume every ride takes 15 minutes per 5 km as a hypothetical average time, we should integrate google in the future.
-  const estimatedTimeInMinutes = (distanceInKm / 5) * 15;
+  if (distanceInKm) {
+    const estimatedTimeInMinutes = (distanceInKm / 5) * 15;
 
-  const distancePrice = distanceInKm * PRICE_PER_KM;
-  const timePrice = estimatedTimeInMinutes * PRICE_PER_MINUTE;
+    const distancePrice = distanceInKm * PRICE_PER_KM;
+    const timePrice = estimatedTimeInMinutes * PRICE_PER_MINUTE;
 
-  const quotePrice = BASE_FARE + distancePrice + timePrice;
+    const quotePrice = BASE_FARE + distancePrice + timePrice;
 
-  return quotePrice;
+    return quotePrice;
+  }
+  return 0;
 };
 
 export const calculateFinalRidePrice = (
@@ -57,20 +66,26 @@ export const calculateFinalRidePrice = (
   const PRICE_PER_KM = pricingSettings.price_km;
   const PRICE_PER_MINUTE = pricingSettings.price_minute;
 
-  const distancePrice = distanceInKm * PRICE_PER_KM;
-  const timePrice = time * PRICE_PER_MINUTE;
+  if (distanceInKm) {
+    const distancePrice = distanceInKm * PRICE_PER_KM;
+    const timePrice = time * PRICE_PER_MINUTE;
 
-  const quotePrice = BASE_FARE + distancePrice + timePrice;
+    const quotePrice = BASE_FARE + distancePrice + timePrice;
 
-  return quotePrice;
+    return quotePrice;
+  }
+  return 0;
 };
 
 export const calculateRideETA = (start: PositionAbrev, end: PositionAbrev) => {
   const distanceInKm = calculateDistance(start, end);
 
-  const estimatedTimeInMinutes = (distanceInKm / 5) * 15;
+  if (distanceInKm) {
+    const estimatedTimeInMinutes = (distanceInKm / 5) * 15;
 
-  return estimatedTimeInMinutes;
+    return estimatedTimeInMinutes;
+  }
+  return 0;
 };
 
 export const parseLocation = (location: string | null | undefined) => {

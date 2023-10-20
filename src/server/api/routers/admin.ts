@@ -107,7 +107,7 @@ export const adminRouter = createTRPCRouter({
     }),
 
   getSettings: publicProcedure.mutation(
-    async ({ input, ctx }): Promise<UpdatedSettings[]> => {
+    async ({ ctx }): Promise<UpdatedSettings[]> => {
       const { data: settingsData, error } = await ctx.supabase
         .from("settings")
         .select("*");
@@ -124,11 +124,12 @@ export const adminRouter = createTRPCRouter({
     },
   ),
 
-  getRides: publicProcedure.mutation(async ({ ctx }): Promise<FormattedRide[]> => {
-    const response = await ctx.supabase
-      .from("rides")
-      .select(
-        `
+  getRides: publicProcedure.mutation(
+    async ({ ctx }): Promise<FormattedRide[]> => {
+      const response = await ctx.supabase
+        .from("rides")
+        .select(
+          `
         id,
         created_at,
         status,
@@ -140,40 +141,47 @@ export const adminRouter = createTRPCRouter({
         drivers (id, name),
         riders (id, name)
       `,
-      )
-      .order("created_at", { ascending: false });
+        )
+        .order("created_at", { ascending: false });
 
-    if (response.error) {
-      throw new Error(response.error.message);
-    }
-    const ridesData: RideData[] = response.data;
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+      const ridesData: RideData[] = response.data;
 
-    const formattedRidesData: FormattedRide[] = ridesData.map((ride: RideData) => {
-        console.log(ride)
-      const startLocation: Location = JSON.parse(ride.start_location) as Location;
-      const endLocation: Location = JSON.parse(ride.end_location) as Location;
+      const formattedRidesData: FormattedRide[] = ridesData.map(
+        (ride: RideData) => {
+          const startLocation: Location = JSON.parse(
+            ride.start_location,
+          ) as Location;
+          const endLocation: Location = JSON.parse(
+            ride.end_location,
+          ) as Location;
 
-      return {
-        rideId: ride.id,
-        created_at: ride.created_at,
-        driver: {
-          id: ride?.drivers?.id || 0,
-          name: ride?.drivers?.name || '',
+          return {
+            rideId: ride.id,
+            created_at: ride.created_at,
+            driver: {
+              id: ride?.drivers?.[0]?.id ?? 0,
+              name: ride?.drivers?.[0]?.name ?? "",
+            },
+            rider: {
+              id: ride?.riders?.[0]?.id ?? 0,
+              name: ride?.riders?.[0]?.name ?? "",
+            },
+            status: ride.status,
+            pickup_address: startLocation.address,
+            dropoff_address: endLocation.address,
+            finished_at: ride.finished_at,
+            price: parseFloat(ride.final_price) || 0,
+            company_profits:
+              parseFloat(ride.final_price) - parseFloat(ride.driver_profit) ||
+              0,
+          };
         },
-        rider: {
-          id: ride?.riders?.id || 0,
-          name: ride?.riders?.name || '',
-        },
-        status: ride.status,
-        pickup_address: startLocation.address,
-        dropoff_address: endLocation.address,
-        finished_at: ride.finished_at,
-        price: parseFloat(ride.final_price) || 0,
-        company_profits:
-          parseFloat(ride.final_price) - parseFloat(ride.driver_profit) || 0,
-      };
-    });
+      );
 
-    return formattedRidesData;
-  }),
+      return formattedRidesData;
+    },
+  ),
 });

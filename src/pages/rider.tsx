@@ -28,7 +28,7 @@ const RiderPage: React.FC = () => {
   const [showGenericModal, setShowGenericModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [driver, setDriver] = useState<Driver>();
-  const [rideRequest, setRideRequest] = useState<RideRequest>();
+  const [rideRequest, setRideRequest] = useState<RideRequest | null>();
   const [riderName, setRiderName] = useState<string>("");
   const [riderEmail, setRiderEmail] = useState<string>("");
   const [isNameSubmitted, setIsNameSubmitted] = useState<boolean>(false);
@@ -220,7 +220,9 @@ const RiderPage: React.FC = () => {
       if (rideStatus === "cancelled") {
         realtimeManager
           .unsubscribeFromRide(rideId)
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           .then(() => {})
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           .catch(() => {});
         handleRideCancelled();
       }
@@ -231,7 +233,7 @@ const RiderPage: React.FC = () => {
     setModalMessage("The ride was cancelled.");
     setShowGenericModal(true);
     setShowModal(false);
-    setRideRequest({});
+    setRideRequest(null);
   };
 
   const getDriverDetails = (driverId: number) => {
@@ -267,6 +269,7 @@ const RiderPage: React.FC = () => {
           riderEmail={riderEmail}
           handleNameChange={handleNameChange}
           handleEmailChange={handleEmailChange}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           handleNameSubmit={handleSubmit}
         />
       ) : (
@@ -297,6 +300,7 @@ const RiderPage: React.FC = () => {
             </div>
             <button
               disabled={!isRideRequestEnabled}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={requestRideQuote}
               className={`absolute bottom-4 left-1/2 w-64 -translate-x-1/2 transform rounded-md p-4 font-bold text-white shadow-lg ${
                 !isRideRequestEnabled
@@ -320,7 +324,9 @@ const RiderPage: React.FC = () => {
         rideQuote={rideQuote}
         isLoadingRideRequest={isLoadingRideRequest}
         driver={driver}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         handleConfirmClick={handleConfirmClick}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         handleCancelRide={handleCancelRide}
         resetMapAndAddresses={resetMapAndAddresses}
       />
