@@ -1,4 +1,4 @@
-# Goober Webapp
+# Goober Webapp - Juan Diego Sanchez ⚡
 
 A comprehensive solution addressing the challenges of ride-sharing, Goober provides a seamless experience for admins, riders, and drivers.
 
