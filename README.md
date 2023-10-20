@@ -4,7 +4,7 @@ A comprehensive solution addressing the challenges of ride-sharing, Goober provi
 
 ## Tech Stack
 
-Initiated with `create-t3-app`, our tech foundation includes Typescript, React, Next.js, and Tailwind for aesthetic perfection. Moreover, tRPC streamlines TypeScript calls and Supabase augments SQL operations, Cron jobs, and real-time functionalities.
+Initiated with `create-t3-app`, our tech foundation includes Typescript, React, Next.js, and Tailwind for styling. Moreover, tRPC streamlines TypeScript calls and Supabase augments SQL operations, Cron jobs, and real-time functionalities.
 
 ## Running the Project Locally
 
