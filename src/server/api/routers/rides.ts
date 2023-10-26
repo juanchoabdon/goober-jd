@@ -316,14 +316,6 @@ export const ridesRouter = createTRPCRouter({
                   rideLoc,
                   driverLoc,
                 );
-              // if (driver.id === 39 && ride.rider_id ===  70) {
-              //   console.log(driverLoc, rideLoc)
-              //   const distance = calculateDistanceOfRide(
-              //     rideLoc,
-              //     driverLoc,
-              //   );
-
-              // }
               if (distance) {
                 if (distance < 2 && distance < minimumDistance) {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

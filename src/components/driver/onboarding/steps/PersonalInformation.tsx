@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, type ChangeEvent, type FormEvent, useCallback } from "react";
 import { type Accept, useDropzone } from "react-dropzone";
 import { FaCloudUploadAlt } from "react-icons/fa";

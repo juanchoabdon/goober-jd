@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+/* eslint-disable @next/next/no-img-element */
+import React, { type FC } from "react";
 
 interface AccountTypeSelectionProps {
   onNext: (type: string) => void;

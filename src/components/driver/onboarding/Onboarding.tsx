@@ -16,10 +16,10 @@ interface RenderStepProps {
 
 interface ReviewAndSubmitData {
   SelectedAccountType: string | null;
-  PersonalInformation: any | null; // Replace `any` with the actual type
-  VehicleInformation: any | null; // Replace `any` with the actual type
-  Documents: any | null; // Replace `any` with the actual type
-  DrivingHistory: any | null; // Replace `any` with the actual type
+  PersonalInformation: any | null;
+  VehicleInformation: any | null;
+  Documents: any | null;
+  DrivingHistory: any | null;
 }
 
 const Onboarding: React.FC = ({}) => {
