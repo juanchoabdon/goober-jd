@@ -1,5 +1,5 @@
 import { type PricingSettings } from "~/shared/types/rides";
-import { type PositionAbrev } from "~/shared/types/map";
+import { PositionComplete, type PositionAbrev } from "~/shared/types/map";
 import { type Location } from "~/shared/types/map";
 
 export const calculateDistance = (
@@ -17,6 +17,33 @@ export const calculateDistance = (
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(degreesToRadians(start.lat)) *
       Math.cos(degreesToRadians(end.lat)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  return distance;
+};
+
+export const calculateDistanceOfRide = (
+  start: PositionAbrev | null,
+  end: PositionComplete | null,
+) => {
+  if (!end || !start) {
+    return;
+  }
+
+  const parsedEnd = JSON.parse(end);
+  const parsedStart = JSON.parse(start);
+
+  const R = 6371;
+  const dLat = degreesToRadians(parsedEnd.latitude - parsedStart.lat);
+  const dLon = degreesToRadians(parsedEnd.longitude - parsedStart.lng);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(degreesToRadians(parsedStart.lat)) *
+      Math.cos(degreesToRadians(parsedEnd.latitude)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
 

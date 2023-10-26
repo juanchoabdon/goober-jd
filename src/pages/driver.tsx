@@ -11,6 +11,7 @@ import LocationRequest from "~/components/shared/LocationRequest";
 import DriverHeader from "~/components/driver/DriverHeader";
 import CompletedRides from "~/components/driver/CompletedRides";
 import AvailableRides from "~/components/driver/AvailableRides";
+import Onboarding from "~/components/driver/onboarding/Onboarding";
 
 const DriverPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -256,6 +257,7 @@ const DriverPage: React.FC = () => {
       return;
     }
     realtimeManager.subscribeToDriverRequests(driver?.id, (payload) => {
+      console.log(payload);
       if (payload.new.driver_id === driver.id) {
         setAvailableRide(payload.new);
       }
@@ -310,14 +312,15 @@ const DriverPage: React.FC = () => {
     <>
       {showModal && <Modal message={modalMessage} onClose={closeModal} />}
       {!isRegistered ? (
-        <DriverRegistrationForm
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          handleRegister={handleRegister}
-          handleInputChange={handleInputChange}
-          formData={formData}
-          isLoading={isLoading}
-        />
-      ) : !locationGranted ? (
+        <Onboarding />
+      ) : // <DriverRegistrationForm
+      //   // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      //   handleRegister={handleRegister}
+      //   handleInputChange={handleInputChange}
+      //   formData={formData}
+      //   isLoading={isLoading}
+      // />
+      !locationGranted ? (
         <LocationRequest />
       ) : (
         <div className="conainer mx-auto">

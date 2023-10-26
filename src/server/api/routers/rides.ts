@@ -12,9 +12,10 @@ import {
   calculateRideETA,
   calculateFinalRidePrice,
   calculateDistance,
+  calculateDistanceOfRide
 } from "~/utils/utils";
 import { type PricingSettings } from "~/shared/types/rides";
-import { type PositionAbrev } from "~/shared/types/map";
+import { PositionComplete, type PositionAbrev } from "~/shared/types/map";
 import { Driver } from "~/shared/types/drivers";
 
 export const ridesRouter = createTRPCRouter({
@@ -279,7 +280,7 @@ export const ridesRouter = createTRPCRouter({
       },
     ),
 
-  assignDriversToRides: publicProcedure.mutation(
+  assignDriversToRides: publicProcedure.query(
     async ({ ctx }): Promise<void> => {
       const { data: requestedRides, error: rideError } = await ctx.supabase
         .from("rides")
@@ -310,11 +311,19 @@ export const ridesRouter = createTRPCRouter({
                 const newRide = ride as RideRequest;
                 const newDriver = driver as Driver;
                 const rideLoc =  newRide?.start_location as PositionAbrev | null;
-                const driverLoc = newDriver?.current_location as PositionAbrev | null;
-              const distance = calculateDistance(
-                rideLoc,
-                driverLoc,
-              );
+                const driverLoc = newDriver?.current_location as PositionComplete | null;
+                const distance = calculateDistanceOfRide(
+                  rideLoc,
+                  driverLoc,
+                );
+              // if (driver.id === 39 && ride.rider_id ===  70) {
+              //   console.log(driverLoc, rideLoc)
+              //   const distance = calculateDistanceOfRide(
+              //     rideLoc,
+              //     driverLoc,
+              //   );
+
+              // }
               if (distance) {
                 if (distance < 2 && distance < minimumDistance) {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -326,6 +335,8 @@ export const ridesRouter = createTRPCRouter({
             }
           }
         }
+
+        console.log(closestDriver)
         if (closestDriver && minimumDistance <= 2) {
           // Assign the driver to this ride and update both the ride and driver status.
           const { error: updateRideError } = await ctx.supabase

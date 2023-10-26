@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~slick-carousel/slick/slick.css"; 
+@import "~slick-carousel/slick/slick-theme.css";
 
 @keyframes spin {
     0% {
@@ -51,3 +53,25 @@
     align-items: center;
     flex-direction: column;
 }
+
+.breadcrumb-stepper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+  }
+  .step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #000; 
+  }
+  .step.active {
+    background-color: #3b7eef;
+    color: #ffff;
+  }
